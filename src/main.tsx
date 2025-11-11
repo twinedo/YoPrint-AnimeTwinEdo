@@ -22,8 +22,8 @@ const theme = createTheme({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
-      <MantineProvider defaultColorScheme=\"dark\" theme={theme}>
-        <Notifications position=\"top-right\" />
+      <MantineProvider defaultColorScheme="dark" theme={theme}>
+        <Notifications position="top-right" />
         <RouterProvider router={router} />
       </MantineProvider>
     </Provider>
