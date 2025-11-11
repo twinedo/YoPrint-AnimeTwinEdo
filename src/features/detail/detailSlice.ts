@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
 import { fetchAnimeDetail } from '../../services/jikanClient'
 import type { RootState } from '../../app/store'
 import type { AnimeSummary } from '../../types/anime'
