@@ -1,5 +1,6 @@
 import searchReducer, { fetchAnimeList, setPage, setQuery } from './searchSlice'
 import type { AnimeSummary, PaginationInfo, SearchResponse } from '../../types/anime'
+import {describe, expect, it} from '@jest/globals';
 
 describe('searchSlice', () => {
   const baseState = searchReducer(undefined, { type: 'init' })
