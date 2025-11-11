@@ -5,7 +5,6 @@ A two-page anime intelligence console built with React 18, TypeScript, Redux Too
 ## Features
 - 🔍 **Instant search** with debouncing, race-condition protection, and server-side pagination powered by Redux Toolkit async thunks.
 - 🎚️ **Advanced filters** (status, format, and minimum score) plus recent-search shortcuts and meaningful empty/error/skeleton states.
-- ⭐ **Persistent favorites** backed by `localStorage`, surfaced as a horizontal rail for quick navigation.
 - 📈 **Trends & insights** panel showing top anime, along with contextual stats (average score, episodes, audience reach) for current results.
 - 📱 **Responsive, glassmorphic UI** crafted with Mantine components, gradients, and skeleton loaders for a cohesive wow factor.
 - 🧪 **Vitest test suite** covering reducers/core logic, plus ready-to-run coverage reporting.
@@ -34,3 +33,7 @@ Visit http://localhost:5173 and start searching.
 - `components` are organized by domain (search, extras, feedback, shared) for clarity.
 - Routes live in `src/router.tsx`; pages consume typed selectors/hooks for state access.
 - Global prompts used during development live in [`PROMPTS.md`](./PROMPTS.md).
+
+
+## Bonus Implementation
+- ⭐ **Persistent favorites** backed by `localStorage`, surfaced as a horizontal rail for quick navigation.
