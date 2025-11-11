@@ -1,6 +1,7 @@
+/// <reference types="vitest" />
+
 import favoritesReducer, { toggleFavorite } from './favoritesSlice'
 import type { AnimeSummary } from '../../types/anime'
-import {describe, expect, it, beforeEach} from '@jest/globals';
 
 describe('favoritesSlice', () => {
   const anime: AnimeSummary = {

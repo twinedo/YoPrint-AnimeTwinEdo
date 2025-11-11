@@ -21,33 +21,29 @@ const FavoritesRail = () => {
       <ScrollArea h={160} type="always" offsetScrollbars>
         <Group wrap="nowrap" gap="lg">
           {favorites.map((anime) => (
-            <Stack
-              key={anime.id}
-              gap={4}
-              component={Link}
-              to={`/anime/${anime.id}`}
-              className="favorite-chip"
-            >
-              <Group gap="sm">
-                <Avatar
-                  radius="md"
-                  src={
-                    anime.images?.jpg?.smallImageUrl ||
-                    anime.images?.webp?.smallImageUrl ||
-                    anime.images?.jpg?.imageUrl
-                  }
-                  alt={anime.title}
-                />
-                <div>
-                  <Text fw={600} size="sm" lineClamp={1}>
-                    {anime.title}
-                  </Text>
-                  <Text size="xs" c="dimmed">
-                    {anime.type ?? '—'} · Score {anime.score?.toFixed(1) ?? 'NR'}
-                  </Text>
-                </div>
-              </Group>
-            </Stack>
+            <Link key={anime.id} to={`/anime/${anime.id}`} className="favorite-chip">
+              <Stack gap={4}>
+                <Group gap="sm">
+                  <Avatar
+                    radius="md"
+                    src={
+                      anime.images?.jpg?.smallImageUrl ||
+                      anime.images?.webp?.smallImageUrl ||
+                      anime.images?.jpg?.imageUrl
+                    }
+                    alt={anime.title}
+                  />
+                  <div>
+                    <Text fw={600} size="sm" lineClamp={1}>
+                      {anime.title}
+                    </Text>
+                    <Text size="xs" c="dimmed">
+                      {anime.type ?? '—'} · Score {anime.score ? anime.score.toFixed(1) : 'NR'}
+                    </Text>
+                  </div>
+                </Group>
+              </Stack>
+            </Link>
           ))}
         </Group>
       </ScrollArea>

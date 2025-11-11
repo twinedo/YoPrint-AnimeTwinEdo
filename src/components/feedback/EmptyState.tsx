@@ -1,6 +1,6 @@
 import { Button, Paper, Stack, Text } from '@mantine/core'
 import { IconMoodSearch } from '@tabler/icons-react'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 interface EmptyStateProps {
   title: string
