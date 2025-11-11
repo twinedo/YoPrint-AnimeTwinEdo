@@ -6,6 +6,103 @@ import type {
   TrailerInfo,
 } from '../types/anime'
 
+interface JikanImageVariant {
+  image_url?: string
+  small_image_url?: string
+  large_image_url?: string
+  imageUrl?: string
+  smallImageUrl?: string
+  largeImageUrl?: string
+}
+
+interface JikanImages {
+  jpg?: JikanImageVariant
+  webp?: JikanImageVariant
+}
+
+interface JikanNameField {
+  name: string
+}
+
+interface JikanStreamingLink {
+  name: string
+  url: string
+}
+
+interface JikanRelationEntry {
+  mal_id: number
+  type: string
+  name: string
+}
+
+interface JikanRelation {
+  relation: string
+  entries?: JikanRelationEntry[]
+}
+
+interface JikanTitle {
+  type: string
+  title: string
+}
+
+interface JikanTrailer {
+  url?: string
+  embed_url?: string
+  youtube_id?: string
+}
+
+interface JikanBroadcast {
+  day?: string
+  time?: string
+  timezone?: string
+  string?: string
+}
+
+interface JikanAnime {
+  mal_id: number
+  title: string
+  title_japanese?: string
+  synopsis?: string | null
+  score?: number | null
+  rank?: number | null
+  popularity?: number | null
+  members?: number | null
+  favorites?: number | null
+  status?: string | null
+  rating?: string | null
+  type?: string | null
+  season?: string | null
+  year?: number | null
+  images?: JikanImages
+  image_url?: string
+  jpg?: JikanImageVariant
+  webp?: JikanImageVariant
+  episodes?: number | null
+  duration?: string | null
+  genres?: JikanNameField[]
+  background?: string | null
+  trailer?: JikanTrailer
+  broadcast?: JikanBroadcast
+  studios?: JikanNameField[]
+  streaming?: JikanStreamingLink[]
+  external?: JikanStreamingLink[]
+  themes?: JikanNameField[]
+  demographics?: JikanNameField[]
+  relations?: JikanRelation[]
+  titles?: JikanTitle[]
+}
+
+interface JikanPaginationInfo {
+  current_page?: number
+  last_visible_page?: number
+  has_next_page?: boolean
+  items?: {
+    count?: number
+    total?: number
+    per_page?: number
+  }
+}
+
 const BASE_URL = 'https://api.jikan.moe/v4'
 
 const buildQuery = (params: Record<string, string | number | boolean | undefined | null>) => {
@@ -17,7 +114,7 @@ const buildQuery = (params: Record<string, string | number | boolean | undefined
   return query.toString()
 }
 
-const toImageVariant = (variant?: any): AnimeImageVariant | undefined =>
+const toImageVariant = (variant?: JikanImageVariant): AnimeImageVariant | undefined =>
   variant
     ? {
         imageUrl: variant.image_url ?? variant.imageUrl,
@@ -26,7 +123,7 @@ const toImageVariant = (variant?: any): AnimeImageVariant | undefined =>
       }
     : undefined
 
-const toTrailer = (data?: any): TrailerInfo | undefined =>
+const toTrailer = (data?: JikanTrailer): TrailerInfo | undefined =>
   data
     ? {
         url: data.url,
@@ -35,7 +132,7 @@ const toTrailer = (data?: any): TrailerInfo | undefined =>
       }
     : undefined
 
-const mapAnimeSummary = (raw: any): AnimeSummary => ({
+const mapAnimeSummary = (raw: JikanAnime): AnimeSummary => ({
   id: raw.mal_id,
   title: raw.title,
   japaneseTitle: raw.title_japanese,
@@ -59,15 +156,15 @@ const mapAnimeSummary = (raw: any): AnimeSummary => ({
       : undefined,
   episodes: raw.episodes,
   duration: raw.duration,
-  genres: raw.genres?.map((genre: any) => genre.name) ?? [],
+  genres: raw.genres?.map((genre) => genre.name) ?? [],
   background: raw.background,
   trailer: toTrailer(raw.trailer),
   broadcast: raw.broadcast,
-  studios: raw.studios?.map((studio: any) => studio.name) ?? [],
+  studios: raw.studios?.map((studio) => studio.name) ?? [],
   streaming: raw.streaming ?? [],
   external: raw.external ?? [],
-  themes: raw.themes?.map((theme: any) => theme.name) ?? [],
-  demographics: raw.demographics?.map((demo: any) => demo.name) ?? [],
+  themes: raw.themes?.map((theme) => theme.name) ?? [],
+  demographics: raw.demographics?.map((demo) => demo.name) ?? [],
   relations: raw.relations ?? [],
   titlesExtended: raw.titles,
 })
@@ -80,7 +177,7 @@ const handleResponse = async <T>(response: Response): Promise<T> => {
       if (errorBody?.message) {
         errorMessage = errorBody.message
       }
-    } catch (error) {
+    } catch {
       // ignore json parse errors
     }
 
@@ -121,7 +218,9 @@ export const searchAnime = async (
     : `${BASE_URL}/top/anime?${searchParams}`
 
   const response = await fetch(endpoint, { signal })
-  const payload = await handleResponse<{ data: any[]; pagination: any }>(response)
+  const payload = await handleResponse<{ data: JikanAnime[]; pagination?: JikanPaginationInfo }>(
+    response,
+  )
   const paginationItems = payload.pagination?.items ?? {}
 
   return {
@@ -138,12 +237,12 @@ export const searchAnime = async (
 
 export const fetchAnimeDetail = async (id: number, signal?: AbortSignal) => {
   const response = await fetch(`${BASE_URL}/anime/${id}/full`, { signal })
-  const payload = await handleResponse<{ data: any }>(response)
+  const payload = await handleResponse<{ data: JikanAnime }>(response)
   return mapAnimeSummary(payload.data)
 }
 
 export const fetchTrendingAnime = async (signal?: AbortSignal) => {
   const response = await fetch(`${BASE_URL}/top/anime?limit=5`, { signal })
-  const payload = await handleResponse<{ data: any[] }>(response)
+  const payload = await handleResponse<{ data: JikanAnime[] }>(response)
   return payload.data.map(mapAnimeSummary)
 }

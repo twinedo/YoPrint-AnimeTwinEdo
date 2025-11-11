@@ -1,5 +1,5 @@
 export interface AnimeImageVariant {
-  imageUrl: string
+  imageUrl?: string
   smallImageUrl?: string
   largeImageUrl?: string
 }
@@ -36,20 +36,20 @@ export interface AnimeSummary {
   id: number
   title: string
   japaneseTitle?: string
-  synopsis?: string
-  score?: number
-  rank?: number
-  popularity?: number
-  members?: number
-  favorites?: number
-  status?: string
-  rating?: string
-  type?: string
-  season?: string
-  year?: number
+  synopsis?: string | null
+  score?: number | null
+  rank?: number | null
+  popularity?: number | null
+  members?: number | null
+  favorites?: number | null
+  status?: string | null
+  rating?: string | null
+  type?: string | null
+  season?: string | null
+  year?: number | null
   images?: AnimeImages
-  episodes?: number
-  duration?: string
+  episodes?: number | null
+  duration?: string | null
   genres?: string[]
   background?: string | null
   trailer?: TrailerInfo
@@ -61,7 +61,7 @@ export interface AnimeSummary {
   demographics?: string[]
   relations?: Array<{
     relation: string
-    entries: Array<{ mal_id: number; type: string; name: string }>
+    entries?: Array<{ mal_id: number; type: string; name: string }>
   }>
   titlesExtended?: AnimeTitle[]
 }
