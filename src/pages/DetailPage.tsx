@@ -215,27 +215,31 @@ const DetailPage = () => {
             </Text>
             {anime.relations?.length ? (
               <Stack gap="xs">
-                {anime.relations.map((relation, index) => (
-                  <Box key={`${relation.relation}-${index}`}>
-                    <Text size="sm" c="dimmed">
-                      {relation.relation}
-                    </Text>
-                    {relation.entries.map((entry) =>
-                      entry.type === 'anime' ? (
-                        <Text
-                          component={Link}
-                          to={`/anime/${entry.mal_id}`}
-                          key={entry.mal_id}
-                          className="text-link"
-                        >
-                          {entry.name}
-                        </Text>
-                      ) : (
-                        <Text key={`${entry.mal_id}-${entry.name}`}>{entry.name}</Text>
-                      ),
-                    )}
-                  </Box>
-                ))}
+                {anime.relations.map((relation, index) => {
+                  const entries = relation.entries ?? []
+                  if (entries.length === 0) return null
+                  return (
+                    <Box key={`${relation.relation}-${index}`}>
+                      <Text size="sm" c="dimmed">
+                        {relation.relation}
+                      </Text>
+                      {entries.map((entry) =>
+                        entry.type === 'anime' ? (
+                          <Text
+                            component={Link}
+                            to={`/anime/${entry.mal_id}`}
+                            key={entry.mal_id}
+                            className="text-link"
+                          >
+                            {entry.name}
+                          </Text>
+                        ) : (
+                          <Text key={`${entry.mal_id ?? entry.name}-${entry.name}`}>{entry.name}</Text>
+                        ),
+                      )}
+                    </Box>
+                  )
+                })}
               </Stack>
             ) : (
               <Text size="sm" c="dimmed">
