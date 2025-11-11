@@ -26,7 +26,7 @@ const SearchPage = () => {
   const search = useAppSelector(selectSearchState)
   const { query, filters, page, items, pagination, status, error, mode, recentSearches } = search
   const [localQuery, setLocalQuery] = useState(query)
-  const [debouncedQuery] = useDebouncedValue(localQuery, 400)
+  const [debouncedQuery] = useDebouncedValue(localQuery, 250)
 
   useEffect(() => {
     if (debouncedQuery.trim() === query.trim()) return
